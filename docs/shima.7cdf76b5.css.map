@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,mBACE,yBAA0B,CAC1B,uEACyB,CACzB,oCACF","file":"shima.7cdf76b5.css","sourceRoot":"..","sourcesContent":["input[type=\"button\"] {\n  -webkit-border-radius: 5px;\n  -webkit-box-shadow: 0 4px 8px rgba(70, 140.210, 0.5),\n    0 -8px 0 8px #48C inset;\n  -webkit-text-shadow: 1px 1px 2px #000;\n}"]}
