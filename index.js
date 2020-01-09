@@ -1,93 +1,109 @@
-var map3;
-var flg;
-var imageurl;
-var imageBounds;
-var historicalOverlay;
-var awaji = new google.maps.LatLng(34.538379, 134.990289);
-var awajiopt = {
+import islandImages from './imgs/islands/*.*'
+import 'babel-polyfill'
+
+
+const isAndroid = () => {
+  return /Android/i.test(navigator.userAgent);
+}
+
+const isiOS = () => {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+const opt = {
   zoom: 9,
-  center: awaji,
+  center: new google.maps.LatLng(34.538379, 134.990289), // awaji
   mapTypeId: google.maps.MapTypeId.ROADMAP,
   disableDoubleClickZoom: true
 };
-function initialize() {
-  var useragent = navigator.userAgent;
-  var mapdiv = document.getElementById("map3_canvas");
-  if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1) {
+
+const dict = {
+  awaji: {
+    width: 0.211893,
+    height: 0.214920,
+  },
+  shoudo: {
+    width: 0.095061,
+    height: 0.149476
+  }
+};
+const opacityOverlay = 0.5;
+
+let gmap;
+let selectedIsland;
+let isOverlayed = false;
+let historicalOverlay;
+
+const start = () => {
+  window.addEventListener('DOMContentLoaded', init);
+}
+
+const init = () => {
+  for (let islandName in islandImages) {
+    document.getElementById(islandName.toString()).addEventListener("click", setIsland, false);
+  }
+
+  const div = initCanvas();
+  gmap = new google.maps.Map(div, opt);
+  google.maps.event.addListener(
+    gmap, 'click', (event) => {
+      onClick(event.latLng);
+    });
+}
+
+const setIsland = (event) => {
+  selectedIsland = event.target.name;
+}
+
+const initCanvas = () => {
+  const useragent = navigator.userAgent;
+  let mapdiv = document.getElementById("map_canvas");
+  if (!isiOS != -1 || isAndroid != -1) {
     mapdiv.style.width = '100%';
     mapdiv.style.height = '100%';
   } else {
     mapdiv.style.width = '90%';
     mapdiv.style.height = '90%';
   }
-  map3 = new google.maps.Map(document.getElementById('map3_canvas'), awajiopt);
-  google.maps.event.addListener(map3, 'click', function (event) {
-    clicked(event.latLng);
-  });
+  return mapdiv;
 }
-function clicked(location) {
-  /*
-  //センターにしたときの
-  var newopt = {
-      zoom:9,
-      center:location,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      map3.setOptions(newopt);
-  */
-  /*
-  //表示範囲で指定してたときの
-      var map3Bounds = map3.getBounds();
-      var swLatlng3 = map3Bounds.getSouthWest();  
-      var neLatlng3 = map3Bounds.getNorthEast();
-  
-      imageBounds = new google.maps.LatLngBounds(
-    new google.maps.LatLng(swLatlng3.lat(),swLatlng3.lng()),
-    new google.maps.LatLng(neLatlng3.lat(),neLatlng3.lng()));    
-    */
-  if (imageurl != null) {
-    if (flg != 1) {//一度に１枚しか表示できないようにする
-      if (imageurl == "awaji.jpg") {
-        imageBounds = new google.maps.LatLngBounds(
-          new google.maps.LatLng(location.lat() - 0.211893, location.lng() - 0.214920),
-          new google.maps.LatLng(location.lat() + 0.211893, location.lng() + 0.214920));
-      } else {
-        imageBounds = new google.maps.LatLngBounds(
-          new google.maps.LatLng(location.lat() - 0.095061, location.lng() - 0.149476),
-          new google.maps.LatLng(location.lat() + 0.095061, location.lng() + 0.149476));
+
+const onClick = (location) => {
+  if (selectedIsland != null) {
+    if (!isOverlayed) {
+      for (let extensionName in islandImages[selectedIsland]) {
+        const fileName = islandImages[selectedIsland][extensionName]
+        const bound = calcBound(selectedIsland, location);
+        historicalOverlay = new google.maps.GroundOverlay(
+          fileName, bound
+        );
       }
 
-      historicalOverlay = new google.maps.GroundOverlay(
-        imageurl,
-        imageBounds);
-      // historicalOverlay.setMap(null);
-      flg = 1;
-      historicalOverlay.setMap(map3);
-      historicalOverlay.setOpacity(0.5); //透明度  
+      isOverlayed = true;
+      historicalOverlay.setMap(gmap);
+      historicalOverlay.setOpacity(opacityOverlay);
 
-      google.maps.event.addListener(historicalOverlay, 'click', function (event) {
-        overclicked(event.latLng);
+      google.maps.event.addListener(historicalOverlay, 'click', (event) => {
+        onClickOverlay(event.latLng);
       });
-    } else {
+    }
+    else {
       historicalOverlay.setMap(null);
-      flg = 0;
+      isOverlayed = false;
     }
   }
 }
-function overclicked(location) {
+
+const calcBound = (islandName, location) => {
+  return new google.maps.LatLngBounds(
+    new google.maps.LatLng(location.lat() - dict[islandName].width, location.lng() - dict[islandName].height),
+    new google.maps.LatLng(location.lat() + dict[islandName].width, location.lng() + dict[islandName].height)
+  );
+}
+
+const onClickOverlay = () => {
   historicalOverlay.setMap(null);
-  flg = 0;
-
-}
-function showAwaji() {
-  imageurl = "awaji.jpg";
-}
-function showShoudo() {
-  imageurl = "syoudo3.png";
+  isOverlayed = false;
 }
 
-
-
-
-
-
+start();

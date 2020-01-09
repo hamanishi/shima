@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "cssnano": "^4.1.10"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0"
+  }
+}
