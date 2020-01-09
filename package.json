@@ -4,5 +4,9 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0"
+  },
+  "scripts": {
+    "build": "rm -r docs && parcel build index.html -d docs",
+    "watch": "parcel index.html --no-hmr --open"
   }
 }
