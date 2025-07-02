@@ -2,7 +2,8 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [master]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -35,7 +36,7 @@ jobs:
 
       - name: Build
         env:
-          VITE_BASE_PATH: /geojson-map-ts/
+          VITE_BASE_PATH: /shima/
         run: yarn build
 
       - name: Setup Pages
