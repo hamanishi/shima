@@ -1,0 +1,257 @@
+/* ぼくの島 - 地図アプリケーション用スタイル */
+
+/* 基本リセット */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, Arial, sans-serif;
+}
+
+/* タッチ操作の最適化 */
+* {
+  touch-action: manipulation;
+}
+
+/* ヘッダー部分 */
+.header {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.header p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* タイトルセクション */
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* since バッジ */
+.since-badge {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+/* 地図コンテナ */
+#map {
+  height: calc(100vh - 160px); /* ヘッダーとフッター分を除く */
+  width: 100%;
+}
+
+/* フッター */
+.footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  padding: 0.75rem 1rem;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* 島選択ボタン（横並び配置） */
+.island-selector {
+  margin-top: 1rem;
+}
+
+.island-selector h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #333;
+  width: 100%;
+}
+
+/* ボタンコンテナ（横並び） */
+.island-selector {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.island-selector h3 {
+  flex-basis: 100%; /* タイトルは単独で一行を占める */
+}
+
+.island-btn {
+  background: #ffffff;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 80px;
+  flex: 0 0 auto; /* 自動サイズ調整を無効化 */
+}
+
+.island-btn:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.island-btn.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.island-btn.active:hover {
+  background: #0056b3;
+  border-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* アイコン部分のスタイル */
+.island-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.island-icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* アクティブ状態でのアイコン色変更 */
+.island-btn.active .island-icon img {
+  filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.island-name {
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.2rem;
+  }
+
+  .header p {
+    font-size: 0.8rem;
+  }
+
+  #map {
+    height: calc(100vh - 140px); /* ヘッダーとフッター分を除く */
+  }
+
+  .footer {
+    padding: 0.5rem;
+  }
+
+  .footer p {
+    font-size: 0.7rem;
+  }
+
+  .island-selector {
+    gap: 0.5rem;
+  }
+
+  .island-btn {
+    min-width: 60px;
+    padding: 0.5rem;
+  }
+
+  .island-icon img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .island-name {
+    font-size: 0.7rem;
+  }
+
+  .title-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .since-badge {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+/* 小さな画面での調整 */
+@media (max-width: 480px) {
+  .header {
+    padding: 0.25rem 0.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.1rem;
+  }
+
+  .header p {
+    font-size: 0.75rem;
+  }
+
+  #map {
+    height: calc(100vh - 80px);
+  }
+
+  .island-selector {
+    gap: 0.4rem;
+  }
+
+  .island-btn {
+    min-width: 50px;
+    padding: 0.4rem;
+  }
+
+  .island-icon img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .island-name {
+    font-size: 0.65rem;
+  }
+}
